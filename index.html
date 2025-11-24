@@ -44,17 +44,18 @@
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* Cambiado de center a flex-start */
             align-items: center;
             padding: 2rem;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto; /* Permitir scroll interno si es necesario */
         }
         
         .slide-content {
             max-width: 1200px;
             width: 100%;
             z-index: 2;
+            margin-top: 1rem; /* Espacio adicional en la parte superior */
         }
         
         .slide-bg {
@@ -376,61 +377,6 @@
         
         /* Estilos específicos para la gráfica de descalce de habilidades */
         .skills-chart {
-            height: 300px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 1rem;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
-        .skills-category {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 45%;
-        }
-        
-        .skills-bars {
-            display: flex;
-            height: 100%;
-            width: 100%;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .skills-bar {
-            width: 45%;
-            position: relative;
-            border-radius: 4px 4px 0 0;
-            transition: height 0.5s ease;
-        }
-        
-        .skills-bar-label {
-            position: absolute;
-            bottom: -25px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 0.8rem;
-        }
-        
-        .skills-bar-value {
-            position: absolute;
-            top: -25px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .skills-category-label {
-            margin-top: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .skills-chart {
             height: 350px;
             display: flex;
             align-items: flex-end;
@@ -491,6 +437,20 @@
             text-align: center;
             font-weight: bold;
             font-size: 0.95rem;
+        }
+        
+        /* Estilos específicos para la diapositiva 10 con mucho contenido */
+        .slide-compact .results-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .slide-compact .result-item {
+            padding: 1rem;
+        }
+        
+        .slide-compact .chart-container {
+            margin: 1rem 0;
         }
         
         @media (max-width: 768px) {
@@ -879,7 +839,7 @@
         </section>
         
         <!-- Slide 10: Resultados Esperados y Financiación -->
-        <section class="slide" id="slide10">
+        <section class="slide slide-compact" id="slide10">
             <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
             <div class="slide-content">
                 <h2>Resultados Esperados y Financiación</h2>
