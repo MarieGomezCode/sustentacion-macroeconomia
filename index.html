@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENALD - Estrategia Nacional de Inclusión Laboral Digna</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <style>
+        :root {
+            --primary: #003366; /* Azul oscuro de la bandera de Colombia */
+            --secondary: #FFCD00; /* Amarillo de la bandera */
+            --accent: #CE1126; /* Rojo de la bandera */
+            --light: #F8F9FA;
+            --dark: #212529;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .slides-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        
+        .slide {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            z-index: 2;
+        }
+        
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .highlight {
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            gap: 2rem;
+        }
+        
+        .stat-box {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-align: center;
+        }
+        
+        .chart {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .bar {
+            width: 60px;
+            background-color: var(--primary);
+            position: relative;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+        }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .pillars-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .pillar {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .pillar-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .pillar-icon {
+            background-color: var(--secondary);
+            color: var(--dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .objectives-list {
+            list-style-type: none;
+            margin: 1.5rem 0;
+        }
+        
+        .objectives-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .actors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .actor-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .actor-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .result-icon {
+            background-color: var(--success);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .indicators-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .indicators-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        .indicators-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .indicators-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .conclusion-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            border-left: 6px solid var(--accent);
+        }
+        
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--gray);
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background-color: var(--primary);
+            transform: scale(1.3);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--secondary);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+        
+        /* Estilos específicos para la gráfica de descalce de habilidades */
+        .skills-chart {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .skills-category {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+        }
+        
+        .skills-bars {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .skills-bar {
+            width: 45%;
+            position: relative;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+        }
+        
+        .skills-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .skills-bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .skills-category-label {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .skills-chart {
+            height: 350px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 2rem 1rem;
+            border-bottom: 1px solid var(--light-gray);
+            gap: 2rem;
+        }
+        
+        .skills-category {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+            height: 100%;
+        }
+        
+        .skills-bars {
+            display: flex;
+            height: 280px;
+            width: 100%;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+        }
+        
+        .skills-bar {
+            width: 80px;
+            position: relative;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+            min-height: 20px;
+        }
+        
+        .skills-bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+        
+        .skills-bar-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+        
+        .skills-category-label {
+            margin-top: 40px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .stats-container, .pillars-container {
+                flex-direction: column;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actors-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-dots {
+                display: none;
+            }
+            
+            .skills-chart {
+                flex-direction: column;
+                height: auto;
+                align-items: center;
+            }
+            
+            .skills-category {
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+            
+            .skills-bars {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="slides-container" id="slidesContainer">
+        <!-- Slide 1: Portada -->
+        <section class="slide" id="slide1">
+            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h1>Estrategia Nacional de Inclusión Laboral Digna</h1>
+                <h2 style="text-align: center; border: none; color: var(--accent);">ENALD</h2>
+                <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 2rem auto;">
+                    Un Marco de Política Pública para la Erradicación del Desempleo Estructural y Juvenil en el Contexto de los ODS y el Derecho Internacional del Trabajo
+                </p>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <p><strong>Sustentación:</strong> 25 de noviembre de 2025</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 2: Diagnóstico del Problema -->
+        <section class="slide" id="slide2">
+            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Diagnóstico del Problema</h2>
+                <p>El desempleo juvenil en Colombia es un problema estructural que va más allá de los ciclos económicos. Según datos del DANE para el tercer trimestre de 2025:</p>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-number">14.6%</div>
+                        <div class="stat-label">Tasa de desocupación juvenil</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">8.8%</div>
+                        <div class="stat-label">Tasa de desocupación nacional</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">5.8 p.p.</div>
+                        <div class="stat-label">Brecha entre desempleo juvenil y nacional</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Disparidades Territoriales en el Desempleo Juvenil (2025)</div>
+                    <div class="chart" id="regionalChart">
+                        <!-- Las barras se generarán con JavaScript -->
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--primary);"></div>
+                            <span>Desempleo juvenil</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>Esta heterogeneidad extrema requiere una política diferenciada y focalizada, especialmente en las regiones con tasas superiores al 25%.</p>
+            </div>
+        </section>
+        
+        <!-- Slide 3: Causas Estructurales -->
+        <section class="slide" id="slide3">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Causas Estructurales</h2>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Descalce de Habilidades en Jóvenes Graduados</div>
+                    <div class="skills-chart" id="skillsMismatchChart">
+                        <!-- Las barras se generarán con JavaScript -->
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--primary);"></div>
+                            <span>Trabajan en área relacionada</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--accent);"></div>
+                            <span>Trabajan en área no relacionada</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-number">7.1 p.p.</div>
+                        <div class="stat-label">Brecha de género en desocupación</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">55%</div>
+                        <div class="stat-label">Proyección de informalidad juvenil para 2030</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">18.7 p.p.</div>
+                        <div class="stat-label">Brecha de calce laboral por género</div>
+                    </div>
+                </div>
+                
+                <p>Estos datos evidencian una desconexión profunda entre el sistema educativo y las necesidades del sector productivo, agravada por brechas de género estructurales.</p>
+            </div>
+        </section>
+        
+        <!-- Slide 4: Marco Legal y ODS 8 -->
+        <section class="slide" id="slide4">
+            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Marco Legal y ODS 8</h2>
+                
+                <div class="pillars-container">
+                    <div class="pillar">
+                        <div class="pillar-title">
+                            <div class="pillar-icon">
+                                <i class='bx bx-world'></i>
+                            </div>
+                            <h3>Convenios OIT</h3>
+                        </div>
+                        <p>Colombia ha ratificado convenios fundamentales que establecen estándares de trabajo decente:</p>
+                        <ul class="objectives-list">
+                            <li>C100 - Igualdad de remuneración</li>
+                            <li>C111 - No discriminación en el empleo</li>
+                            <li>C138 - Edad mínima para trabajar</li>
+                            <li>C105 - Abolición del trabajo forzoso</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pillar">
+                        <div class="pillar-title">
+                            <div class="pillar-icon">
+                                <i class='bx bx-target-lock'></i>
+                            </div>
+                            <h3>ODS 8</h3>
+                        </div>
+                        <p>Objetivo de Desarrollo Sostenible 8: Trabajo decente y crecimiento económico</p>
+                        <ul class="objectives-list">
+                            <li>Meta 8.5: Trabajo decente para todos</li>
+                            <li>Meta 8.6: Reducir proporción de jóvenes NINIS</li>
+                            <li>Meta 8.b: Estrategia nacional para empleo juvenil</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p>La ENALD se fundamenta jurídicamente en estos compromisos internacionales, garantizando que la política no solo genere empleos, sino empleos de calidad.</p>
+            </div>
+        </section>
+        
+        <!-- Slide 5: Objetivos -->
+        <section class="slide" id="slide5">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Objetivos de la ENALD</h2>
+                
+                <div class="stat-box" style="max-width: 600px; margin: 2rem auto;">
+                    <div class="stat-number" style="color: var(--accent);">Objetivo General</div>
+                    <div class="stat-label">Reducir el desempleo estructural y juvenil mediante la creación de empleo digno, formal y de calidad, cerrando las brechas de género y territoriales.</div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-trending-down'></i>
+                        </div>
+                        <div>
+                            <h3>Reducción del desempleo</h3>
+                            <p>Del <span class="highlight">14.6%</span> al <span class="highlight">10%</span> en cuatro años</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div>
+                            <h3>Disminución del descalce</h3>
+                            <p>Del <span class="highlight">53%</span> al <span class="highlight">20%</span> mediante articulación educación-empresa</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-female'></i>
+                        </div>
+                        <div>
+                            <h3>Cierre de brecha de género</h3>
+                            <p>Reducción de al menos <span class="highlight">4 puntos porcentuales</span> en desocupación</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-map'></i>
+                        </div>
+                        <div>
+                            <h3>Convergencia territorial</h3>
+                            <p>Reducción del <span class="highlight">40%</span> en desempleo en zonas críticas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 6: Pilar I - Incentivos a la Demanda -->
+        <section class="slide" id="slide6">
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Pilar I: Incentivos a la Demanda</h2>
+                
+                <div class="pillar">
+                    <div class="pillar-title">
+                        <div class="pillar-icon">
+                            <i class='bx bx-money'></i>
+                        </div>
+                        <h3>Reformulación de Incentivos Fiscales</h3>
+                    </div>
+                    <p>Actualmente existe una deducción del <span class="highlight">120%</span> en impuesto de renta para empresas que contraten jóvenes. Sin embargo, esta medida presenta riesgos de precarización.</p>
+                    
+                    <h3 style="margin-top: 1.5rem;">Estrategias Propuestas:</h3>
+                    <ul class="objectives-list">
+                        <li><strong>Condicionalidad estricta:</strong> El beneficio solo aplicará para contratos indefinidos o a término fijo mínimo de 18 meses, con aportes completos a seguridad social.</li>
+                        <li><strong>Incentivos territoriales focalizados:</strong> En zonas de alerta roja (desempleo >25%), la deducción aumentará al <span class="highlight">150%</span> con subsidios directos a la nómina.</li>
+                        <li><strong>Liderazgo público:</strong> El sector público implementará programas obligatorios de becas-pasantía remuneradas para jóvenes.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 7: Pilar II - Cierre de Brechas -->
+        <section class="slide" id="slide7">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Pilar II: Cierre de Brechas de Habilidades</h2>
+                
+                <div class="pillar">
+                    <div class="pillar-title">
+                        <div class="pillar-icon">
+                            <i class='bx bx-book-reader'></i>
+                        </div>
+                        <h3>Reingeniería Formativa</h3>
+                    </div>
+                    <p>Aborda la desconexión entre formación y demanda laboral, corrigiendo el descalce del <span class="highlight">53%</span>.</p>
+                    
+                    <h3 style="margin-top: 1.5rem;">Estrategias Propuestas:</h3>
+                    <ul class="objectives-list">
+                        <li><strong>Consejos Sectoriales de Competencias:</strong> Permanentes, con participación obligatoria del sector privado, SENA y Cámaras de Comercio en áreas estratégicas (TI, logística, energías renovables).</li>
+                        <li><strong>Modelo Dual Obligatorio:</strong> Expansión de la articulación SENA con financiamiento centralizado para eliminar disparidades regionales.</li>
+                        <li><strong>Cuotas de género:</strong> Programas de acción afirmativa para mujeres en formación de alto valor agregado (ingeniería, TI, logística).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 8: Pilar III - Emprendimiento -->
+        <section class="slide" id="slide8">
+            <img src="https://images.unsplash.com/photo-1551836026-d5c8cbf7ecc1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Pilar III: Emprendimiento Juvenil</h2>
+                
+                <div class="pillar">
+                    <div class="pillar-title">
+                        <div class="pillar-icon">
+                            <i class='bx bx-rocket'></i>
+                        </div>
+                        <h3>Fomento al Emprendimiento</h3>
+                    </div>
+                    <p>Capitaliza el potencial emprendedor de los jóvenes para la creación de nuevos empleos formales.</p>
+                    
+                    <h3 style="margin-top: 1.5rem;">Estrategias Propuestas:</h3>
+                    <ul class="objectives-list">
+                        <li><strong>FONCAI:</strong> Fondo Nacional de Capital Semilla de Inclusión, especializado en microcrédito y capital de riesgo para emprendimientos juveniles en zonas vulnerables.</li>
+                        <li><strong>Ventanilla Única Digital:</strong> Fortalecimiento de la Ventanilla de Fomento para Jóvenes mediante plataforma digital que simplifique acceso a crédito, subsidios y asistencia técnica.</li>
+                    </ul>
+                    
+                    <div class="stats-container" style="margin-top: 1.5rem;">
+                        <div class="stat-box">
+                            <div class="stat-number">86%</div>
+                            <div class="stat-label">Negocios apoyados aumentan ventas</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">13,000+</div>
+                            <div class="stat-label">Empleos creados en programas similares</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 9: Actores Involucrados -->
+        <section class="slide" id="slide9">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Actores Involucrados</h2>
+                
+                <div class="actors-grid">
+                    <div class="actor-card">
+                        <div class="actor-icon">
+                            <i class='bx bx-building-house'></i>
+                        </div>
+                        <h3>Presidencia</h3>
+                        <p>Liderazgo del Comité Interministerial</p>
+                    </div>
+                    
+                    <div class="actor-card">
+                        <div class="actor-icon">
+                            <i class='bx bx-money-withdraw'></i>
+                        </div>
+                        <h3>Ministerio de Hacienda</h3>
+                        <p>Coherencia presupuestal y fiscal</p>
+                    </div>
+                    
+                    <div class="actor-card">
+                        <div class="actor-icon">
+                            <i class='bx bx-briefcase'></i>
+                        </div>
+                        <h3>Ministerio de Trabajo</h3>
+                        <p>Implementación y seguimiento</p>
+                    </div>
+                    
+                    <div class="actor-card">
+                        <div class="actor-icon">
+                            <i class='bx bx-graduation'></i>
+                        </div>
+                        <h3>SENA</h3>
+                        <p>Formación y capacitación</p>
+                    </div>
+                    
+                    <div class="actor-card">
+                        <div class="actor-icon">
+                            <i class='bx bx-group'></i>
+                        </div>
+                        <h3>Colombia Joven</h3>
+                        <p>Coordinación de programas</p>
+                    </div>
+                    
+                    <div class="actor-card">
+                        <div class="actor-icon">
+                            <i class='bx bx-building'></i>
+                        </div>
+                        <h3>Cámaras de Comercio</h3>
+                        <p>Articulación con sector privado</p>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 2rem;">La implementación de la ENALD requiere coordinación interinstitucional bajo una gobernanza unificada para superar la fragmentación histórica.</p>
+            </div>
+        </section>
+        
+        <!-- Slide 10: Resultados Esperados y Financiación -->
+        <section class="slide" id="slide10">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Resultados Esperados y Financiación</h2>
+                
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-user-check'></i>
+                        </div>
+                        <div>
+                            <h3>150,000 empleos</h3>
+                            <p>Formales juveniles anuales</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-line-chart-down'></i>
+                        </div>
+                        <div>
+                            <h3>Reducción del descalce</h3>
+                            <p>Del 53% al 20% en habilidades</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-map-pin'></i>
+                        </div>
+                        <div>
+                            <h3>Convergencia territorial</h3>
+                            <p>40% menos desempleo en zonas críticas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-item">
+                        <div class="result-icon">
+                            <i class='bx bx-female-sign'></i>
+                        </div>
+                        <div>
+                            <h3>Brecha de género</h3>
+                            <p>4 p.p. menos en desocupación</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Estructura de Financiación</div>
+                    <div class="chart" id="financingChart">
+                        <!-- Las barras se generarán con JavaScript -->
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--primary);"></div>
+                            <span>Presupuesto General de la Nación (60%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--secondary);"></div>
+                            <span>Créditos BID/FMI (30%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: var(--accent);"></div>
+                            <span>Cofinanciación privada (10%)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; margin-top: 1rem;"><strong>Inversión estimada:</strong> 2.5 billones de pesos en el primer año</p>
+            </div>
+        </section>
+        
+        <!-- Slide 11: Indicadores de Seguimiento -->
+        <section class="slide" id="slide11">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Indicadores de Seguimiento</h2>
+                
+                <table class="indicators-table">
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Frecuencia</th>
+                            <th>Meta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ODS 8.5.2: Tasa de desocupación juvenil</td>
+                            <td>Trimestral</td>
+                            <td>Reducción a 10% en 4 años</td>
+                        </tr>
+                        <tr>
+                            <td>ODS 8.6.1: Porcentaje de NINIS</td>
+                            <td>Semestral</td>
+                            <td>Reducción del 25%</td>
+                        </tr>
+                        <tr>
+                            <td>ODS 8.b.1: Trazabilidad de incentivos</td>
+                            <td>Anual</td>
+                            <td>80% de contratos >18 meses</td>
+                        </tr>
+                        <tr>
+                            <td>Tasa de calce laboral por sector</td>
+                            <td>Anual</td>
+                            <td>Aumento del 53% al 80%</td>
+                        </tr>
+                        <tr>
+                            <td>Convergencia de tasas regionales</td>
+                            <td>Anual</td>
+                            <td>Reducción del 40% en zonas críticas</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p style="margin-top: 1.5rem;">Se publicarán informes trimestrales de avance en plataforma pública, garantizando transparencia y rendición de cuentas.</p>
+            </div>
+        </section>
+        
+        <!-- Slide 12: Conclusiones -->
+        <section class="slide" id="slide12">
+            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Fondo" class="slide-bg">
+            <div class="slide-content">
+                <h2>Conclusiones</h2>
+                
+                <div class="conclusion-box">
+                    <p>El desempleo estructural y juvenil no es solo un problema económico, es una amenaza a la cohesión social y al desarrollo sostenible de Colombia. Con una tasa de desocupación juvenil que duplica la nacional y brechas territoriales que triplican la media, la intervención estatal es urgente e impostergable.</p>
+                    
+                    <p style="margin-top: 1.5rem;">La <span class="highlight">Estrategia Nacional de Inclusión Laboral Digna</span> no es un programa más, es una política de Estado que transforma el 'filtro de exclusión' en una palanca de desarrollo. Mediante incentivos condicionados, formación pertinente y fomento al emprendimiento, garantizaremos que nuestra juventud acceda a trabajo digno, formal y de calidad.</p>
+                    
+                    <p style="margin-top: 1.5rem; text-align: center; font-weight: bold; font-size: 1.2rem;">
+                        Esta es una inversión en estabilidad, en productividad y en el futuro de Colombia.
+                    </p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <h3>¡Gracias por su atención!</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="nav-dots" id="navDots">
+        <!-- Los puntos de navegación se generarán con JavaScript -->
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuración de gráficas
+            const regionalData = [
+                { city: 'Leticia', value: 4.5 },
+                { city: 'Rionegro', value: 5.3 },
+                { city: 'Bogotá', value: 12.1 },
+                { city: 'Medellín', value: 13.8 },
+                { city: 'Cali', value: 15.2 },
+                { city: 'Arauca', value: 25.8 },
+                { city: 'Quibdó', value: 28.6 }
+            ];
+            
+            const skillsMismatchData = [
+                { category: 'Hombres SENA', related: 47, unrelated: 53 },
+                { category: 'Mujeres formación privada', related: 29.9, unrelated: 70.1 }
+            ];
+            
+            const financingData = [
+                { source: 'PGN', percentage: 60 },
+                { source: 'BID/FMI', percentage: 30 },
+                { source: 'Privada', percentage: 10 }
+            ];
+            
+            // Crear gráfica de disparidades regionales
+            const regionalChart = document.getElementById('regionalChart');
+            const maxRegionalValue = Math.max(...regionalData.map(item => item.value));
+            
+            regionalData.forEach(item => {
+                const barHeight = (item.value / maxRegionalValue) * 100;
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = `${barHeight}%`;
+                bar.style.backgroundColor = item.value > 25 ? 'var(--accent)' : 'var(--primary)';
+                
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.textContent = item.city;
+                
+                const value = document.createElement('div');
+                value.className = 'bar-value';
+                value.textContent = `${item.value}%`;
+                
+                bar.appendChild(value);
+                bar.appendChild(label);
+                regionalChart.appendChild(bar);
+            });
+            
+            // Crear gráfica de descalce de habilidades - CORREGIDA
+            const skillsChart = document.getElementById('skillsMismatchChart');
+            
+            skillsMismatchData.forEach(item => {
+                const categoryContainer = document.createElement('div');
+                categoryContainer.className = 'skills-category';
+                
+                const barsContainer = document.createElement('div');
+                barsContainer.className = 'skills-bars';
+                
+                const relatedBar = document.createElement('div');
+                relatedBar.className = 'skills-bar';
+                relatedBar.style.height = `${item.related}%`;
+                relatedBar.style.backgroundColor = 'var(--primary)';
+                
+                const unrelatedBar = document.createElement('div');
+                unrelatedBar.className = 'skills-bar';
+                unrelatedBar.style.height = `${item.unrelated}%`;
+                unrelatedBar.style.backgroundColor = 'var(--accent)';
+                
+                const relatedValue = document.createElement('div');
+                relatedValue.className = 'skills-bar-value';
+                relatedValue.textContent = `${item.related}%`;
+                
+                const unrelatedValue = document.createElement('div');
+                unrelatedValue.className = 'skills-bar-value';
+                unrelatedValue.textContent = `${item.unrelated}%`;
+                
+                relatedBar.appendChild(relatedValue);
+                unrelatedBar.appendChild(unrelatedValue);
+                
+                barsContainer.appendChild(relatedBar);
+                barsContainer.appendChild(unrelatedBar);
+                
+                const categoryLabel = document.createElement('div');
+                categoryLabel.className = 'skills-category-label';
+                categoryLabel.textContent = item.category;
+                
+                categoryContainer.appendChild(barsContainer);
+                categoryContainer.appendChild(categoryLabel);
+                skillsChart.appendChild(categoryContainer);
+            });
+            
+            // Crear gráfica de financiación
+            const financingChart = document.getElementById('financingChart');
+            
+            financingData.forEach(item => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = `${item.percentage}%`;
+                
+                // Asignar colores diferentes a cada barra
+                if (item.source === 'PGN') {
+                    bar.style.backgroundColor = 'var(--primary)';
+                } else if (item.source === 'BID/FMI') {
+                    bar.style.backgroundColor = 'var(--secondary)';
+                } else {
+                    bar.style.backgroundColor = 'var(--accent)';
+                }
+                
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.textContent = item.source;
+                
+                const value = document.createElement('div');
+                value.className = 'bar-value';
+                value.textContent = `${item.percentage}%`;
+                
+                bar.appendChild(value);
+                bar.appendChild(label);
+                financingChart.appendChild(bar);
+            });
+            
+            // Navegación por puntos
+            const slidesContainer = document.getElementById('slidesContainer');
+            const navDots = document.getElementById('navDots');
+            const progressBar = document.getElementById('progressBar');
+            const slides = document.querySelectorAll('.slide');
+            
+            // Crear puntos de navegación
+            slides.forEach((slide, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot';
+                dot.dataset.slide = index;
+                dot.addEventListener('click', () => {
+                    slidesContainer.scrollTo({
+                        top: slide.offsetTop,
+                        behavior: 'smooth'
+                    });
+                });
+                navDots.appendChild(dot);
+            });
+            
+            // Actualizar puntos de navegación y barra de progreso al hacer scroll
+            slidesContainer.addEventListener('scroll', () => {
+                const scrollTop = slidesContainer.scrollTop;
+                const scrollHeight = slidesContainer.scrollHeight - slidesContainer.clientHeight;
+                const scrollProgress = (scrollTop / scrollHeight) * 100;
+                
+                progressBar.style.width = `${scrollProgress}%`;
+                
+                // Encontrar la diapositiva actual
+                let currentSlide = 0;
+                slides.forEach((slide, index) => {
+                    const slideTop = slide.offsetTop;
+                    const slideHeight = slide.offsetHeight;
+                    
+                    if (scrollTop >= slideTop - slideHeight / 3) {
+                        currentSlide = index;
+                    }
+                });
+                
+                // Actualizar puntos de navegación
+                document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Inicializar primera diapositiva como activa
+            document.querySelector('.nav-dot').classList.add('active');
+            
+            // Navegación con teclado
+            document.addEventListener('keydown', (e) => {
+                const currentSlide = Array.from(slides).findIndex(slide => {
+                    const rect = slide.getBoundingClientRect();
+                    return rect.top >= 0 && rect.top < window.innerHeight / 2;
+                });
+                
+                if (e.key === 'ArrowDown' && currentSlide < slides.length - 1) {
+                    slides[currentSlide + 1].scrollIntoView({ behavior: 'smooth' });
+                } else if (e.key === 'ArrowUp' && currentSlide > 0) {
+                    slides[currentSlide - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
